@@ -1,10 +1,19 @@
+import { makeOption } from "@utils/index";
+
 export const PATHS = {
     // auth routes
-    LOGIN: '/auth',
-    SIGNUP: '/auth/signup',
-
-    // protected routes
+    AUTH: '/auth',
+    // unprotected rout
     HOME: '/',
+    FEATURES: '#features',
+    TESTIMONIALS: '#testimonials',
+    PRICING: '#pricing',
+    // protected routes
     ACCOUNT: '/accounts'
 };
 
+export const PRODUCT_LINKS = [
+    makeOption('Features', PATHS.FEATURES),
+    makeOption('Testimonials', PATHS.TESTIMONIALS),
+    makeOption('Pricing', PATHS.PRICING),
+]

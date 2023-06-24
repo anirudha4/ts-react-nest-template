@@ -4,23 +4,27 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { PATHS } from "@config/constants/paths";
 
 // components
-import { Layout, Login, Signup } from "@pages/auth";
-import { Home } from "@pages/home";
+import { Auth } from "@pages/auth";
+import { Home, Layout } from "@pages/home";
 
 const App = () => {
   const router = createBrowserRouter([
-    {
-      path: PATHS.LOGIN,
-      element: <Layout />,
-      children: [
-        { index: true, element: <Login /> },
-        { path: PATHS.SIGNUP, element: <Signup /> }
-      ]
-    },
+    // unprotected routes
     {
       path: PATHS.HOME,
-      element: <Home />
+      element: <Layout />,
+      children: [
+        {
+          path: PATHS.HOME,
+          element: <Home />
+        },
+        {
+          path: PATHS.AUTH,
+          element: <Auth />
+        },
+      ]
     },
+    // protected routes
   ])
   return (
     <RouterProvider router={router} />

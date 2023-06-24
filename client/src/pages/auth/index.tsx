@@ -1,9 +1,4 @@
-import Login from "./Login"
-import Signup from "./Signup"
-import Layout from "./Layout"
-
+import Auth from "./Auth"
 export {
-    Login,
-    Signup,
-    Layout
+    Auth
 }
