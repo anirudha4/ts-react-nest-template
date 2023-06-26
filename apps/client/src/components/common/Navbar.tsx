@@ -6,7 +6,7 @@ const Navbar = () => {
     return (
         <div className="flex items-center gap-10">
             <NavLink className='text-secondary-foreground font-medium hover:text-primary duration-150' to={PATHS.AUTH}>Login</NavLink>
-            <Link to={PATHS.AUTH}><Button rounded="full">Get Started</Button></Link>
+            <Link to={PATHS.AUTH + '?type=signup'}><Button rounded="full">Get Started</Button></Link>
         </div>
     )
 }

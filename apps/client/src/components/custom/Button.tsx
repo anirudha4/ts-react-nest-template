@@ -9,7 +9,7 @@ const button = cva(['px-5 font-medium outline-none cursor-pointer duration-200']
     variants: {
         intent: {
             primary: [
-                'bg-primary text-primary-foreground hover:bg-primary-dark'
+                'bg-primary text-primary-foreground hover:bg-primary-dark focus:ring'
             ],
             secondary: ['bg-secondary text-secondary-foreground hover:bg-accent'],
             destructive: ['bg-destructive text-destructive-foreground'],

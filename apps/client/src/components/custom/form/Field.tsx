@@ -1,16 +1,19 @@
+import { DetailedHTMLProps, InputHTMLAttributes, forwardRef } from "react"
 import { measure } from "@types"
 import { cva } from "class-variance-authority"
 import classNames from "classnames"
-import { DetailedHTMLProps, InputHTMLAttributes } from "react"
+import { FieldError } from "react-hook-form";
+import { BiError } from "react-icons/bi";
+import { mergeClasses } from "@utils";
 
 const field = cva(classNames(
-    "relative flex flex-col justify-around border border-2 focus-within:border-primary rounded-md",
-    "px-2 group duration-100 transition-all"
+    "relative flex flex-col justify-around border focus-within:border-primary rounded-md",
+    "group duration-100 transition-all overflow-hidden"
 ), {
     variants: {
         intent: {
             contained: [''],
-            uncontained: []
+            uncontained: ['px-3']
         },
         size: {
             sm: ['h-12'],
@@ -23,34 +26,49 @@ const field = cva(classNames(
 
 type fieldVariants = 'contained' | 'uncontained'
 
-// interface Props extends Omit<HTMLInputElement, 'size'> {
 interface Props extends Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'measure' | 'size'> {
     size?: measure,
     variant?: fieldVariants,
-    label?: string
+    label?: string,
+    error?: FieldError
 }
 
-const Field = ({ className, variant = 'contained', size = 'md', name, id, label, ...props }: Props) => {
+const Field = forwardRef<HTMLInputElement, Props>(({ className, variant = 'contained', size = 'md', name, id, label, error, ...props }: Props, ref) => {
     const isContainedField = variant === 'contained';
     return (
-        <div
-            className={classNames(
-                field({ className, intent: variant, size })
+        <div>
+            <div
+                className={mergeClasses(classNames(
+                    field({ className, intent: variant, size }),
+                    {
+                        "border-destructive": !!error
+                    }
+                ))}
+            >
+                {isContainedField && (
+                    <label
+                        htmlFor={id}
+                        className={classNames(
+                            "px-2 text-xs text-muted-foreground block pt-1 group-focus-within:text-primary-dark",
+                            {
+                                "text-destructive": !!error
+                            }
+                        )}
+                    >
+                        {label}
+                    </label>
+                )}
+                <input ref={ref} className="px-2 outline-none block h-full text-accent-foreground" name={name} id={id} {...props} />
+            </div>
+            {error && (
+                <div className="text-destructive text-sm mt-1 flex gap-2 items-center">
+                    <BiError size={18} />
+                    <span>
+                        {error.message}
+                    </span>
+                </div>
             )}
-        >
-            {isContainedField && (
-                <label
-                    htmlFor={id}
-                    className={classNames(
-                        "text-xs text-muted-foreground block pt-1 group-focus-within:text-primary-dark"
-                    )}
-                >
-                    {label}
-                </label>
-            )}
-
-            <input className="outline-none block h-full text-accent-foreground" name={name} id={id} {...props} />
         </div>
     )
-}
+})
 export default Field
