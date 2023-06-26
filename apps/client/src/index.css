@@ -17,7 +17,8 @@
         --muted-foreground: hsl(215.4 16.3% 46.9%);
 
         --primary: #2563EB;
-        --primary-foreground: #dee9ff;
+        --primary-dark: #1953d2;
+        --primary-foreground: #f0f5ff;
 
         --secondary: hsl(223, 33%, 96%);
         --secondary-foreground: hsl(216deg 45.77% 6.48%);

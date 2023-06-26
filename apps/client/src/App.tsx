@@ -18,11 +18,11 @@ const App = () => {
           path: PATHS.HOME,
           element: <Home />
         },
-        {
-          path: PATHS.AUTH,
-          element: <Auth />
-        },
       ]
+    },
+    {
+      path: PATHS.AUTH,
+      element: <Auth />
     },
     // protected routes
   ])

@@ -1,17 +1,19 @@
-import { HTMLAttributes } from "react"
+import { HTMLAttributes, ReactNode } from "react"
 import { cva } from "class-variance-authority"
 import classNames from "classnames"
 // 
 import { mergeClasses } from "@utils"
+import { measure } from "@types"
 
-const button = cva(['px-5 font-medium', 'outline-none'], {
+const button = cva(['px-5 font-medium outline-none cursor-pointer duration-200'], {
     variants: {
         intent: {
             primary: [
-                'bg-primary text-primary-foreground'
+                'bg-primary text-primary-foreground hover:bg-primary-dark'
             ],
-            secondary: [],
-            destructive: []
+            secondary: ['bg-secondary text-secondary-foreground hover:bg-accent'],
+            destructive: ['bg-destructive text-destructive-foreground'],
+            outline: ['bg-secondary border border-accent text-secondary-foreground hover:bg-accent'],
         },
         size: {
             sm: ['h-8'],
@@ -28,9 +30,8 @@ const button = cva(['px-5 font-medium', 'outline-none'], {
 })
 
 // types and interfaces
-export type measure = 'sm' | 'md' | 'lg';
 export interface Props extends HTMLAttributes<HTMLButtonElement> {
-    variant?: 'primary' | 'secondary' | 'destructive'
+    variant?: 'primary' | 'secondary' | 'destructive' | 'outline'
     size?: measure
     rounded?: measure | 'full'
 }
