@@ -10,7 +10,7 @@ import background from '@assets/gradient-background.jpg';
 const Auth = () => {
     const { search } = useLocation();
     const query = new URLSearchParams(search);
-    const isLogin = query.get('type') !== 'signup'
+    const isLogin = query.get('type') !== 'signup';
     const reverseLink = isLogin ? `${PATHS.AUTH}?type=signup` : `${PATHS.AUTH}?type=login`;
     return (
         <div className="flex">
