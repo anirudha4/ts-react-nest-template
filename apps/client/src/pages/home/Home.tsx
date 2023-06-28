@@ -15,7 +15,7 @@ const Home = () => {
                 <div className="flex flex-col items-center justify-center gap-10" style={{ minHeight: 'calc(100vh - 6rem)' }}>
                     <div className="-mt-20">
                         <div className="max-w-4xl text-secondary-foreground mx-auto text-center text-6xl text-display leading-normal">
-                            Gain Financial Clarity with and track expenses with precision with <span className="text-primary">moneybolt</span>.
+                            Gain Financial Clarity and track expenses  with <span className="text-primary">moneybolt</span>.
                         </div>
                         <div className="mt-5 text-secondary-foreground text-center text-lg font-light max-w-lg mx-auto tracking-wide">
                             Track expenses, analyze spending patterns, and make informed financial decisions effortlessly
