@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
 import * as z from "zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { BiError } from "react-icons/bi";
@@ -8,7 +7,7 @@ import { useForm } from "react-hook-form";
 import Button from "@components/custom/Button"
 import Field from "@components/custom/form/Field"
 import Alert from "@components/custom/Alert";
-import { PATHS } from "@config/constants/paths";
+import useAuth from "@hooks/useAuth";
 
 type Props = {
     isLogin?: boolean,
@@ -24,12 +23,11 @@ type signupFormValues = z.infer<typeof signupSchema>
 
 const loginSchema = signupSchema.omit({ name: true })
 
-type loginFormValues = z.infer<typeof loginSchema>
+// type loginFormValues = z.infer<typeof loginSchema>
 
 const Form = ({ isLogin }: Props) => {
     // hooks
-    const navigate = useNavigate();
-
+    const { loginWithEmailAndPassword, signupWithEmailAndPassword, error } = useAuth();
     const {
         register,
         handleSubmit,
@@ -38,21 +36,22 @@ const Form = ({ isLogin }: Props) => {
         resolver: zodResolver(isLogin ? loginSchema : signupSchema)
     });
 
-    const onSubmit = async (values: signupFormValues | loginFormValues) => {
+    const onSubmit = async (values: signupFormValues) => {
         if (isLogin) {
-            navigate(PATHS.DASHBOARD);
+            loginWithEmailAndPassword(values)
         } else {
-            navigate(PATHS.AUTH + '?type=login')
+            console.log({ values });
+            signupWithEmailAndPassword(values)
         }
     }
 
     return (
         <AnimatePresence>
             <motion.form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 py-2 pt-10">
-                {false && (
+                {error && (
                     <Alert className='gap-2 mt-4'>
                         <BiError size={18} />
-                        {''}
+                        {error}
                     </Alert>
                 )}
                 {!isLogin && (
