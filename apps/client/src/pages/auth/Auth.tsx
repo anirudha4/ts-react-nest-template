@@ -12,6 +12,7 @@ const Auth = () => {
     const query = new URLSearchParams(search);
     const isLogin = query.get('type') !== 'signup';
     const reverseLink = isLogin ? `${PATHS.AUTH}?type=signup` : `${PATHS.AUTH}?type=login`;
+    
     return (
         <div className="flex">
             <motion.div
