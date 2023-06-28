@@ -1,9 +1,11 @@
 import { DetailedHTMLProps, InputHTMLAttributes, forwardRef } from "react"
-import { measure } from "@types"
 import { cva } from "class-variance-authority"
 import classNames from "classnames"
 import { FieldError } from "react-hook-form";
 import { BiError } from "react-icons/bi";
+import { motion } from "framer-motion";
+
+import { measure } from "@types"
 import { mergeClasses } from "@utils";
 
 const field = cva(classNames(
@@ -48,12 +50,12 @@ const Field = forwardRef<HTMLInputElement, Props>(({ className, variant = 'conta
                 {isContainedField && (
                     <label
                         htmlFor={id}
-                        className={classNames(
-                            "px-2 text-xs text-muted-foreground block pt-1 group-focus-within:text-primary-dark",
+                        className={mergeClasses(classNames(
+                            "px-2 text-xs text-muted-foreground block pt-1 group-focus-within:text-primary-dark duration-100",
                             {
                                 "text-destructive": !!error
                             }
-                        )}
+                        ))}
                     >
                         {label}
                     </label>
@@ -61,12 +63,12 @@ const Field = forwardRef<HTMLInputElement, Props>(({ className, variant = 'conta
                 <input ref={ref} className="px-2 outline-none block h-full text-accent-foreground" name={name} id={id} {...props} />
             </div>
             {error && (
-                <div className="text-destructive text-sm mt-1 flex gap-2 items-center">
+                <motion.div initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ bounceStiffness: 100 }} className="text-destructive text-sm mt-1 flex gap-2 items-center">
                     <BiError size={18} />
                     <span>
                         {error.message}
                     </span>
-                </div>
+                </motion.div>
             )}
         </div>
     )

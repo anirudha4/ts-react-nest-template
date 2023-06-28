@@ -14,6 +14,5 @@
 
 ### API Communication
 - axios setup for communicating with backend through HTTP/HTTPS
-- redux-saga eventChannel for socket communication for action dispatches
 
 

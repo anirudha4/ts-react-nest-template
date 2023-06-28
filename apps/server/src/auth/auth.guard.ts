@@ -4,6 +4,7 @@ import { AccessTokensService } from "./access-tokens/access-tokens.service";
 import { isEmpty } from "lodash";
 import { RequestWithUserDto } from "src/users/users.dto";
 import { IncomingHttpHeaders } from "http";
+import { CookieOptions, Response } from "express";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -12,16 +13,14 @@ export class AuthGuard implements CanActivate {
     private accessTokenService: AccessTokensService
   ) {}
 
-  getAccessTokenFromHeaders(headers: IncomingHttpHeaders): string {
-    const header = headers["authorization"];
-    const token = header.split(" ")[1];
-    return token;
+  getAccessTokenFromHeaders(cookies: CookieOptions): string {
+    return cookies["access_token"];
   }
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: RequestWithUserDto = context.switchToHttp().getRequest();
 
     // get access token from request headers
-    const access_token = this.getAccessTokenFromHeaders(request.headers);
+    const access_token = this.getAccessTokenFromHeaders(request.cookies);
     if (isEmpty(access_token)) return false;
 
     // verify access_token

@@ -9,7 +9,8 @@ export const PATHS = {
     TESTIMONIALS: '#testimonials',
     PRICING: '#pricing',
     // protected routes
-    ACCOUNT: '/accounts'
+    ACCOUNT: '/accounts',
+    DASHBOARD: '/app'
 };
 
 export const PRODUCT_LINKS = [
