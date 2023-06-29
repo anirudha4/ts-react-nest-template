@@ -37,12 +37,12 @@ export class AuthService {
         const { email, password } = credentials;
 
         let user = await this.userService.findUser({ email });
-        if (isEmpty(user)) throw new UnauthorizedException("User not found!");
+        if (isEmpty(user)) throw new UnauthorizedException("Invalid email or password. Please try again.");
 
         const matchPassword = await this.comparePasswords(password, user.password);
 
         if (!matchPassword)
-            throw new UnauthorizedException("Password is incorrect!");
+            throw new UnauthorizedException("Invalid email or password. Please try again.");
 
         const payload: accessTokenDto = {
             sub: user.id,
