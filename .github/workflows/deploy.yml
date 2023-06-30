@@ -23,7 +23,7 @@ jobs:
       - name: Copy build to server
         run: cp -r apps/client/dist/* apps/server/public
       - name: run prisma migrations
-        run: npx prisma migrate deploy
+        run: cd apps/server && npx prisma migrate deploy
         env: 
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - name: Install Railway
