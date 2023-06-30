@@ -33,7 +33,8 @@ const AuthProvider = ({ children }: Props) => {
                 setUser(response?.data)
             }
         },
-        retry: false
+        retry: false,
+        refetchOnWindowFocus: false
     });
 
     const { mutate: logoutMutation, isLoading: logoutLoading } = useMutation('auth/logout', logout, {
