@@ -36,13 +36,11 @@ export class AuthController {
     const { access_token, user } = await this.authService.login(credentials, req);
 
     res.cookie('access_token', access_token, { httpOnly: true });
-    console.log({ access_token, user });
     return res.json({ user });
   }
   @Get('me')
   @UseGuards(AuthGuard)
   async me(@Request() req: RequestWithUserDto) {
-    console.log(req.user);
     return req.user
   }
 }
