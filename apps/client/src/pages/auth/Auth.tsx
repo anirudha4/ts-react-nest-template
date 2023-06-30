@@ -1,8 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-// 
+// components
 import Form from './Form';
 import { Logo } from '@components/common';
+// 
 import { PATHS } from '@config/constants/paths';
 // assets
 import background from '@assets/gradient-background.jpg';
@@ -12,6 +13,7 @@ const Auth = () => {
     const query = new URLSearchParams(search);
     const isLogin = query.get('type') !== 'signup';
     const reverseLink = isLogin ? `${PATHS.AUTH}?type=signup` : `${PATHS.AUTH}?type=login`;
+
     return (
         <div className="flex">
             <motion.div

@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, HTMLAttributes } from "react"
+import { ButtonHTMLAttributes } from "react"
 import { cva } from "class-variance-authority"
 import classNames from "classnames"
 // 
@@ -41,12 +41,13 @@ export interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
     loading?: boolean
 }
 
-const Button = ({ size = 'md', variant = 'primary', rounded = 'md', loading = false, className, disabled, children }: Props) => {
+const Button = ({ size = 'md', variant = 'primary', rounded = 'md', loading = false, className, disabled, children, ...props }: Props) => {
     return (
         <button
             className={mergeClasses(
                 classNames(button({ className, size, intent: disabled ? 'disabled' : variant, rounded }), 'disabled:bg-secondary')
             )}
+            {...props}
         >
             {!loading && children}
             {loading && <Loader size={20} />}

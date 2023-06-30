@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -42,5 +43,20 @@ export class AuthController {
   @UseGuards(AuthGuard)
   async me(@Request() req: RequestWithUserDto) {
     return req.user
+  }
+
+  @Delete('logout')
+  @UseGuards(AuthGuard)
+  async logout(@Request() req: RequestWithUserDto, @Res() res: Response) {
+    // delete access token for this user
+    await this.authService.logout(req.user);
+    // clear cookie
+    res.clearCookie('access_token', {
+      httpOnly: true
+    });
+    // return
+    return res.json({
+      logout: true
+    });
   }
 }

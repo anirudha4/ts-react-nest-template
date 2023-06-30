@@ -10,3 +10,5 @@ export const signup = async (credentials: UserType): Promise<AxiosResponse> => {
 }
 
 export const getUser = async (): Promise<AxiosResponse> => axios.get('/api/auth/me');
+
+export const logout = async (): Promise<AxiosResponse> => axios.delete('/api/auth/logout');

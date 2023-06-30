@@ -1,5 +1,4 @@
 import { ImSpinner2 } from 'react-icons/im';
-import { measure } from "@lib/types"
 
 type Props = {
     size?: number

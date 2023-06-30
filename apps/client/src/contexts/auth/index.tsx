@@ -1,6 +1,6 @@
 import Splash from "@components/common/Splash";
 import { PATHS } from "@config/constants/paths";
-import { getUser, login, signup } from "@lib/auth";
+import { getUser, login, logout, signup } from "@lib/auth";
 import { ContextType } from "@lib/types/contexts";
 import { isAxiosError } from "axios";
 import { ReactNode, createContext, useState } from "react";
@@ -9,8 +9,10 @@ import { useNavigate } from "react-router-dom";
 
 export type UserType = {
     name: string,
-    email: string
-} | null;
+    email: string,
+    avatarUrl?: string
+    organizationId?: string
+};
 
 type Props = {
     children: ReactNode
@@ -22,10 +24,10 @@ export const AuthContext = createContext<ContextType | null>(null);
 const AuthProvider = ({ children }: Props) => {
     const navigate = useNavigate();
 
-    const [user, setUser] = useState<UserType>(null);
+    const [user, setUser] = useState<UserType | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const { data, isLoading } = useQuery('auth/me', getUser, {
+    const { isLoading } = useQuery('auth/me', getUser, {
         onSettled(response) {
             if (response?.data) {
                 setUser(response?.data)
@@ -34,6 +36,11 @@ const AuthProvider = ({ children }: Props) => {
         retry: false
     });
 
+    const { mutate: logoutMutation, isLoading: logoutLoading } = useMutation('auth/logout', logout, {
+        onSettled() {
+            window.location.href = import.meta.env.BASE_URL
+        },
+    });
 
     const { mutate: signupMutation, isLoading: isSigningUp } = useMutation('signup', signup, {
         onSettled(response) {
@@ -78,15 +85,17 @@ const AuthProvider = ({ children }: Props) => {
         return await signupMutation(credentials);
     }
     // prepare values
-    const values = {
+    const values: ContextType = {
         loginWithEmailAndPassword,
         signupWithEmailAndPassword,
         error,
         user,
         isLoggingIn,
-        isSigningUp
-    }
-    if(isLoading) {
+        isSigningUp,
+        logoutMutation,
+        logoutLoading
+    };
+    if (isLoading) {
         return <Splash />
     }
     return (
