@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: cd apps/client && yarn install --frozen-lockfile && yarn build
       - name: Copy build to server
-        run: cp -r apps/client/dist apps/server/public
+        run: cp -r apps/client/dist/* apps/server/public
       - name: Install Railway
         run: npm i -g @railway/cli
       - name: Deploy
