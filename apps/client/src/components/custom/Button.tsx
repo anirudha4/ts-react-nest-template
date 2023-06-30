@@ -1,11 +1,14 @@
-import { HTMLAttributes, ReactNode } from "react"
+import { ButtonHTMLAttributes, HTMLAttributes } from "react"
 import { cva } from "class-variance-authority"
 import classNames from "classnames"
 // 
 import { mergeClasses } from "@utils"
-import { measure } from "@types"
+import { measure } from "@lib/types"
+import Loader from "./Loader"
 
-const button = cva(['px-5 font-medium outline-none cursor-pointer duration-200'], {
+const button = cva([
+    'px-5 font-medium outline-none cursor-pointer duration-200 flex items-center justify-center gap-3',
+], {
     variants: {
         intent: {
             primary: [
@@ -14,6 +17,7 @@ const button = cva(['px-5 font-medium outline-none cursor-pointer duration-200']
             secondary: ['bg-secondary text-secondary-foreground hover:bg-accent'],
             destructive: ['bg-destructive text-destructive-foreground'],
             outline: ['bg-secondary border border-accent text-secondary-foreground hover:bg-accent'],
+            disabled: ['bg-slate-200 text-slate-400'],
         },
         size: {
             sm: ['h-8'],
@@ -30,20 +34,22 @@ const button = cva(['px-5 font-medium outline-none cursor-pointer duration-200']
 })
 
 // types and interfaces
-export interface Props extends HTMLAttributes<HTMLButtonElement> {
-    variant?: 'primary' | 'secondary' | 'destructive' | 'outline'
+export interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
+    variant?: 'primary' | 'secondary' | 'destructive' | 'outline' | 'disabled'
     size?: measure
-    rounded?: measure | 'full'
+    rounded?: measure | 'full',
+    loading?: boolean
 }
 
-const Button = ({ size = 'md', variant = 'primary', rounded = 'md', className, children }: Props) => {
+const Button = ({ size = 'md', variant = 'primary', rounded = 'md', loading = false, className, disabled, children }: Props) => {
     return (
         <button
             className={mergeClasses(
-                classNames(button({ className, size, intent: variant, rounded }))
+                classNames(button({ className, size, intent: disabled ? 'disabled' : variant, rounded }), 'disabled:bg-secondary')
             )}
         >
-            {children}
+            {!loading && children}
+            {loading && <Loader size={20} />}
         </button>
     )
 }

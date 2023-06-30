@@ -3,11 +3,11 @@ import { JwtService } from "@nestjs/jwt";
 import { PrismaService } from "src/prisma/prisma.service";
 import { accessTokenDto } from "./dto/access-token.dto";
 import { user_account } from "@prisma/client";
-import { isEmpty } from "lodash";
+import { isEmpty, omit } from "lodash";
 
 @Injectable()
 export class AccessTokensService {
-  constructor(private prisma: PrismaService, private jwt: JwtService) {}
+  constructor(private prisma: PrismaService, private jwt: JwtService) { }
   async signAccessToken(payload: accessTokenDto, ip?: string) {
     // check if access_token is already dispatched to user
     /**
@@ -47,7 +47,7 @@ export class AccessTokensService {
     const payload: accessTokenDto = await this.jwt.verifyAsync(access_token, {
       secret: process.env.JWT_SECRET,
     });
-    const user = await this.prisma.user_account.findUnique({
+    let user = await this.prisma.user_account.findUnique({
       where: {
         id: payload.sub,
       },
@@ -63,6 +63,7 @@ export class AccessTokensService {
     });
 
     if (isEmpty(dispatchedToken)) return null;
+    user = omit(user, ["password"]);
     return user;
   }
 }
