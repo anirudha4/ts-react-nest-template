@@ -9,4 +9,5 @@ export type ContextType = {
     loginWithEmailAndPassword: (user: Omit<UserType, 'name'>) => Promise<void>,
     signupWithEmailAndPassword: (user: UserType) => Promise<void>,
     logoutMutation: () => void,
+    clearError: () => void
 }

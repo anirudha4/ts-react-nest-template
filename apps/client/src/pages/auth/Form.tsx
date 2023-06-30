@@ -10,6 +10,7 @@ import Alert from "@components/custom/Alert";
 import { useAuth } from "@hooks";
 import { Navigate } from "react-router-dom";
 import { PATHS } from "@config/constants/paths";
+import { useEffect } from "react";
 
 type Props = {
     isLogin?: boolean,
@@ -29,11 +30,13 @@ const loginSchema = signupSchema.omit({ name: true })
 
 const Form = ({ isLogin }: Props) => {
     // hooks
-    const { loginWithEmailAndPassword, signupWithEmailAndPassword, error, isLoggingIn, isSigningUp, user } = useAuth();
+    const { clearError, loginWithEmailAndPassword, signupWithEmailAndPassword, error, isLoggingIn, isSigningUp, user } = useAuth();
     const {
         register,
         handleSubmit,
-        formState
+        formState,
+        clearErrors,
+        reset
     } = useForm<signupFormValues>({
         resolver: zodResolver(isLogin ? loginSchema : signupSchema)
     });
@@ -46,9 +49,15 @@ const Form = ({ isLogin }: Props) => {
             signupWithEmailAndPassword(values)
         }
     }
-    if(user) {
+    if (user) {
         return <Navigate to={PATHS.DASHBOARD} />
     }
+
+    useEffect(() => {
+        clearErrors(["email", "name", "password"]);
+        clearError();
+        reset();
+    }, [isLogin]);
     return (
         <AnimatePresence>
             <motion.form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 py-2 pt-10">

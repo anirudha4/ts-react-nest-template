@@ -27,6 +27,10 @@ const AuthProvider = ({ children }: Props) => {
     const [user, setUser] = useState<UserType | null>(null);
     const [error, setError] = useState<string | null>(null);
 
+    // setters
+    const clearError = () => setError(null);
+
+    // queries and mutations
     const { isLoading } = useQuery('auth/me', getUser, {
         onSettled(response) {
             if (response?.data) {
@@ -78,6 +82,7 @@ const AuthProvider = ({ children }: Props) => {
         },
     });
 
+    // handlers
     const loginWithEmailAndPassword = async (credentials: Omit<UserType, "name">) => {
         return await loginMutation(credentials);
     }
@@ -85,6 +90,7 @@ const AuthProvider = ({ children }: Props) => {
     const signupWithEmailAndPassword = async (credentials: UserType) => {
         return await signupMutation(credentials);
     }
+
     // prepare values
     const values: ContextType = {
         loginWithEmailAndPassword,
@@ -94,7 +100,8 @@ const AuthProvider = ({ children }: Props) => {
         isLoggingIn,
         isSigningUp,
         logoutMutation,
-        logoutLoading
+        logoutLoading,
+        clearError
     };
     if (isLoading) {
         return <Splash />
