@@ -37,7 +37,7 @@ const AuthProvider = ({ children }: Props) => {
     });
 
     const { mutate: logoutMutation, isLoading: logoutLoading } = useMutation('auth/logout', logout, {
-        onSettled(data) {
+        onSettled() {
             window.location.href = import.meta.env.BASE_URL
         },
     });
