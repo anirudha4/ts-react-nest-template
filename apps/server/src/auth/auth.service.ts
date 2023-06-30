@@ -9,6 +9,7 @@ import { isEmpty, omit } from "lodash";
 import { AccessTokensService } from "./access-tokens/access-tokens.service";
 import { accessTokenDto } from "./access-tokens/dto/access-token.dto";
 import { RequestWithUserDto } from "src/users/users.dto";
+import { user_account } from "@prisma/client";
 
 @Injectable()
 export class AuthService {
@@ -65,5 +66,21 @@ export class AuthService {
         hashedPassword: string
     ): Promise<boolean> {
         return await bcrypt.compare(password, hashedPassword);
+    }
+
+    async logout(
+        user: user_account
+    ): Promise<void> {
+        const accessToken = await this.prisma.access_token.findFirst({
+            where: {
+                userId: user.id
+            }
+        });
+
+        await this.prisma.access_token.delete({
+            where: {
+                id: accessToken.id
+            }
+        });
     }
 }

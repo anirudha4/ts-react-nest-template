@@ -47,13 +47,16 @@ export class AuthController {
 
   @Delete('logout')
   @UseGuards(AuthGuard)
-  async logout(@Res() res: Response) {
-
+  async logout(@Request() req: RequestWithUserDto, @Res() res: Response) {
+    // delete access token for this user
+    await this.authService.logout(req.user);
+    // clear cookie
     res.clearCookie('access_token', {
       httpOnly: true
     });
+    // return
     return res.json({
       logout: true
-    })
+    });
   }
 }

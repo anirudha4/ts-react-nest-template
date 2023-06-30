@@ -11,7 +11,7 @@ export type UserType = {
     name: string,
     email: string,
     avatarUrl?: string
-    organizationId: string
+    organizationId?: string
 };
 
 type Props = {
@@ -36,7 +36,7 @@ const AuthProvider = ({ children }: Props) => {
         retry: false
     });
 
-    const { mutate: logoutMutation } = useMutation('auth/logout', logout, {
+    const { mutate: logoutMutation, isLoading: logoutLoading } = useMutation('auth/logout', logout, {
         onSettled(data) {
             window.location.href = import.meta.env.BASE_URL
         },
@@ -92,7 +92,8 @@ const AuthProvider = ({ children }: Props) => {
         user,
         isLoggingIn,
         isSigningUp,
-        logoutMutation
+        logoutMutation,
+        logoutLoading
     };
     if (isLoading) {
         return <Splash />

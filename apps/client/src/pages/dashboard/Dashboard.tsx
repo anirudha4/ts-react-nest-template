@@ -4,7 +4,7 @@ import Button from "@components/custom/Button";
 import { useAuth } from "@hooks";
 
 const Dashboard = () => {
-    const { user, logoutMutation } = useAuth();
+    const { user, logoutMutation, logoutLoading } = useAuth();
 
     // return if user is not null
     if (!user) return null;
@@ -26,7 +26,7 @@ const Dashboard = () => {
                         <div className="font-medium text-lg">
                             {user.name}
                         </div>
-                        <div className="text-sm">
+                        <div className="text-sm text-muted-foreground">
                             {user.email}
                         </div>
                     </div>
@@ -35,7 +35,12 @@ const Dashboard = () => {
                 <hr />
                 <br />
                 <div className="flex justify-end">
-                    <Button variant='destructive' size='md' onClick={logoutMutation}>
+                    <Button
+                        variant='destructive'
+                        size='md'
+                        onClick={logoutMutation}
+                        loading={logoutLoading}
+                    >
                         <TbLogout size={18} />
                         <span>Logout</span>
                     </Button>
