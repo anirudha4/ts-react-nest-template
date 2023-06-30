@@ -7,7 +7,9 @@ import { useForm } from "react-hook-form";
 import Button from "@components/custom/Button"
 import Field from "@components/custom/form/Field"
 import Alert from "@components/custom/Alert";
-import useAuth from "@hooks/useAuth";
+import { useAuth } from "@hooks";
+import { Navigate } from "react-router-dom";
+import { PATHS } from "@config/constants/paths";
 
 type Props = {
     isLogin?: boolean,
@@ -27,7 +29,7 @@ const loginSchema = signupSchema.omit({ name: true })
 
 const Form = ({ isLogin }: Props) => {
     // hooks
-    const { loginWithEmailAndPassword, signupWithEmailAndPassword, error } = useAuth();
+    const { loginWithEmailAndPassword, signupWithEmailAndPassword, error, isLoggingIn, isSigningUp, user } = useAuth();
     const {
         register,
         handleSubmit,
@@ -44,7 +46,9 @@ const Form = ({ isLogin }: Props) => {
             signupWithEmailAndPassword(values)
         }
     }
-
+    if(user) {
+        return <Navigate to={PATHS.DASHBOARD} />
+    }
     return (
         <AnimatePresence>
             <motion.form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 py-2 pt-10">
@@ -61,7 +65,7 @@ const Form = ({ isLogin }: Props) => {
                 )}
                 <Field error={formState.errors.email} id="email" {...register('email')} label="Email" placeholder="Eg. john@email.com" />
                 <Field error={formState.errors.password} id="password" {...register('password')} type="password" name="password" label="Password" placeholder="********" />
-                <Button>
+                <Button disabled={isLoggingIn || isSigningUp} loading={isLoggingIn || isSigningUp}>
                     {isLogin ? 'Log In' : 'Sign Up'}
                 </Button>
             </motion.form>

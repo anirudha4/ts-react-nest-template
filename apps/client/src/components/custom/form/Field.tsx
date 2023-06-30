@@ -5,7 +5,7 @@ import { FieldError } from "react-hook-form";
 import { BiError } from "react-icons/bi";
 import { motion } from "framer-motion";
 
-import { measure } from "@types"
+import { measure } from "@lib/types"
 import { mergeClasses } from "@utils";
 
 const field = cva(classNames(

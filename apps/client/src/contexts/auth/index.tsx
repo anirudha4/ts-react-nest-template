@@ -1,8 +1,10 @@
+import Splash from "@components/common/Splash";
 import { PATHS } from "@config/constants/paths";
-import { login, signup } from "@lib/auth";
+import { getUser, login, signup } from "@lib/auth";
+import { ContextType } from "@lib/types/contexts";
 import { isAxiosError } from "axios";
 import { ReactNode, createContext, useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 
 export type UserType = {
@@ -13,14 +15,7 @@ export type UserType = {
 type Props = {
     children: ReactNode
 }
-export type ContextType = {
-    user: UserType | Omit<UserType, 'name'>,
-    error?: string | null,
-    isLoggingIn: boolean,
-    isSigningUp: boolean,
-    loginWithEmailAndPassword: (user: Omit<UserType, 'name'>) => Promise<void>,
-    signupWithEmailAndPassword: (user: UserType) => Promise<void>,
-}
+
 
 export const AuthContext = createContext<ContextType | null>(null);
 
@@ -29,6 +24,16 @@ const AuthProvider = ({ children }: Props) => {
 
     const [user, setUser] = useState<UserType>(null);
     const [error, setError] = useState<string | null>(null);
+
+    const { data, isLoading } = useQuery('auth/me', getUser, {
+        onSettled(response) {
+            if (response?.data) {
+                setUser(response?.data)
+            }
+        },
+        retry: false
+    });
+
 
     const { mutate: signupMutation, isLoading: isSigningUp } = useMutation('signup', signup, {
         onSettled(response) {
@@ -80,6 +85,9 @@ const AuthProvider = ({ children }: Props) => {
         user,
         isLoggingIn,
         isSigningUp
+    }
+    if(isLoading) {
+        return <Splash />
     }
     return (
         <AuthContext.Provider value={values}>
