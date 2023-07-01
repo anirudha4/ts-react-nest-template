@@ -7,9 +7,9 @@ import classNames from "classnames";
 const container = cva(["mx-auto"], {
     variants: {
         size: {
-            sm: ["sm:container", "sm:px-2"],
-            md: ["md:container", "md:px-2"],
-            lg: ["lg:container", "lg:px-2"],
+            sm: ["md:container", "px-2"],
+            md: ["md:container", "px-2"],
+            lg: ["md:container", "px-2"],
         },
     },
     defaultVariants: {

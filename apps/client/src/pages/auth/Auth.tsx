@@ -7,6 +7,7 @@ import { Logo } from '@components/common';
 import { PATHS } from '@config/constants/paths';
 // assets
 import background from '@assets/gradient-background.jpg';
+import classNames from 'classnames';
 
 const Auth = () => {
     const { search } = useLocation();
@@ -20,7 +21,10 @@ const Auth = () => {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: 'spring', duration: .7 }}
-                className="col-span-1 h-screen flex flex-col justify-center px-20 max-w-[600px] w-full"
+                className={classNames(
+                    "col-span-1 h-screen flex flex-col justify-center max-w-[600px] w-full",
+                    "mx-auto md:mx-0 md:px-20 px-4"
+                )}
             >
                 <Logo size='lg' />
                 <div className="mt-10 flex flex-col gap-2">
@@ -62,7 +66,10 @@ const Auth = () => {
                 </div>
                 <Form isLogin={isLogin} />
             </motion.div>
-            <div className="flex-1 h-screen">
+            <div className={classNames(
+                "md:flex-1 h-screen md:block",
+                "hidden"
+            )}>
                 <img className='h-full w-full' src={background} alt="" />
             </div>
         </div>
